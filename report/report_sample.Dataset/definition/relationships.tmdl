@@ -1,0 +1,5 @@
+relationship 617c2cc5-5c39-4c99-80e3-fe8a6e3f5ffb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DummyData.OrderDate
+	toColumn: LocalDateTable_b17ac8db-ee3c-4595-9ace-84f2c82ff532.Date
+

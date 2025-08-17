@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "2d3ae83f1574be325b40",
+  "position": {
+    "x": 60.677200902934544,
+    "y": 101.12866817155756,
+    "z": 0,
+    "height": 462.30248306997748,
+    "width": 641.44469525959369
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DummyData"
+                    }
+                  },
+                  "Property": "Item"
+                }
+              },
+              "queryRef": "Table1.Item",
+              "nativeQueryRef": "Item",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DummyData"
+                        }
+                      },
+                      "Property": "Total"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Table1.Total)",
+              "nativeQueryRef": "Sum of Total"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "DummyData"
+                      }
+                    },
+                    "Property": "Total"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total Sales'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "fe896c17a6c3e3e03c08",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DummyData"
+              }
+            },
+            "Property": "Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "843eb601c6c6604652b1",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "DummyData"
+                  }
+                },
+                "Property": "Total"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

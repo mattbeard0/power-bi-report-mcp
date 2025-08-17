@@ -1,0 +1,86 @@
+table DummyData
+	lineageTag: f1af7f97-8fda-4897-aa44-8eee67be04b9
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 793701c3-46f7-4de1-bdf8-a34a5aaaccc6
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		variation Variation
+			isDefault
+			relationship: 617c2cc5-5c39-4c99-80e3-fe8a6e3f5ffb
+			defaultHierarchy: LocalDateTable_b17ac8db-ee3c-4595-9ace-84f2c82ff532.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Region
+		dataType: string
+		lineageTag: 4ea10234-1d63-437f-b5ba-a0eef74aead5
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rep
+		dataType: string
+		lineageTag: 712e2bd1-c4a7-4d3d-8555-e40011b13820
+		summarizeBy: none
+		sourceColumn: Rep
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item
+		dataType: string
+		lineageTag: a098627f-d057-4ba5-92df-2a9e0aa0dc3f
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column Units
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f690a79-9354-4fd8-a614-96c4f006fcc7
+		summarizeBy: sum
+		sourceColumn: Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Cost'
+		dataType: double
+		lineageTag: 04744d59-0037-42d9-b668-30ef6a86e283
+		summarizeBy: sum
+		sourceColumn: Unit Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Total
+		dataType: double
+		lineageTag: 39e24f98-7600-4355-877f-26ca0eb58431
+		summarizeBy: sum
+		sourceColumn: Total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DummyData = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\matth\Downloads\SampleData\SampleData.xlsx"), null, true),
+				    Table1_Table = Source{[Item="Table1",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Table1_Table,{{"OrderDate", type date}, {"Region", type text}, {"Rep", type text}, {"Item", type text}, {"Units", Int64.Type}, {"Unit Cost", type number}, {"Total", type number}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+
