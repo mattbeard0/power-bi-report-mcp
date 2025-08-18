@@ -325,7 +325,7 @@ class TestPagesData:
         
         assert data.pageOrder == ["Page1", "Page2"]
         assert data.activePageName == "Page1"
-        assert data.schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json"
+        assert data.api_schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json"
     
     @pytest.mark.unit
     def test_pages_data_defaults(self):
@@ -337,4 +337,4 @@ class TestPagesData:
         
         assert data.pageOrder == []
         assert data.activePageName == ""
-        assert data.schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json"
+        assert data.api_schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json"

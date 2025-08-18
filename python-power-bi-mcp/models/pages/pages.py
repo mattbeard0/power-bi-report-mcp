@@ -13,7 +13,7 @@ class PagesData(BaseModel):
     """Page metadata including page order and active page"""
     pageOrder: List[str] = Field(default_factory=list)
     activePageName: str
-    schema: str = Field(alias="$schema", default="https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json")
+    api_schema: str = Field(alias="$schema", default="https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json")
 
 
 

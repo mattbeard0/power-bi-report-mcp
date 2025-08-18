@@ -454,7 +454,7 @@ class TestPageData:
         assert data.displayOption == "FitToPage"
         assert data.height == 720
         assert data.width == 1280
-        assert data.schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json"
+        assert data.api_schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json"
     
     @pytest.mark.unit
     def test_page_data_defaults(self):
@@ -469,7 +469,7 @@ class TestPageData:
         assert data.displayOption == "FitToPage"
         assert data.height == 720
         assert data.width == 1280
-        assert data.schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json"
+        assert data.api_schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json"
     
     @pytest.mark.unit
     def test_page_data_validation(self):

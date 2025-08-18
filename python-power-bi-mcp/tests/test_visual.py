@@ -310,7 +310,7 @@ class TestVisualData:
         assert data.position.y == 200.0
         assert data.visual.visualType == VisualType.card
         assert data.visual.drillFilterOtherVisuals is True
-        assert data.schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json"
+        assert data.api_schema == "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json"
     
     @pytest.mark.unit
     def test_visual_data_defaults(self):

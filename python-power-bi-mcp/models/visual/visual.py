@@ -39,7 +39,7 @@ class VisualVisual(BaseModel):
     drillFilterOtherVisuals: bool = Field(default=True)
 
 class VisualData(BaseModel):
-    schema: str = Field(alias="$schema", default="https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json")
+    api_schema: str = Field(alias="$schema", default="https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json")
     name: str
     position: VisualPosition
     visual: VisualVisual
@@ -52,6 +52,7 @@ class Visual:
         if data:
             self.data = data
             self.file_path.parent.mkdir(parents=True, exist_ok=True)
+            self.file_path = self.file_path / "visual.json"
             self.write_back()
         else:
             if file_path.exists():
@@ -66,6 +67,8 @@ class Visual:
             raise ValueError("File path not set")
         
         try:
+            # Ensure the parent directory exists
+            self.file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(self.file_path, 'w') as f:
                 f.write(self.data.model_dump_json(indent=2, by_alias=True, exclude_none=True))
             return True
