@@ -3,9 +3,50 @@
 Test runner script for Power BI MCP project
 """
 import sys
+import os
 import subprocess
 import argparse
 from pathlib import Path
+
+
+def _find_venv_python() -> str:
+    """Find a Python interpreter from a virtual environment if available.
+
+    Preference order (Windows paths first):
+    - <repo_root>/venv/Scripts/python.exe
+    - <project_dir>/venv/Scripts/python.exe
+    - <repo_root>/.venv/Scripts/python.exe
+    - VIRTUAL_ENV environment variable
+    - Fallback to current interpreter (sys.executable)
+    """
+
+    project_dir = Path(__file__).parent
+    repo_root = project_dir.parent
+
+    candidates = [
+        repo_root / "venv" / "Scripts" / "python.exe",
+        project_dir / "venv" / "Scripts" / "python.exe",
+        repo_root / ".venv" / "Scripts" / "python.exe",
+    ]
+
+    # Also consider POSIX layout just in case (CI or WSL)
+    candidates += [
+        repo_root / "venv" / "bin" / "python",
+        project_dir / "venv" / "bin" / "python",
+        repo_root / ".venv" / "bin" / "python",
+    ]
+
+    # Respect active VIRTUAL_ENV if set
+    if os.environ.get("VIRTUAL_ENV"):
+        venv_path = Path(os.environ["VIRTUAL_ENV"]) / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+        candidates.insert(0, venv_path)
+
+    for c in candidates:
+        if c.exists():
+            return str(c)
+
+    # Fallbacks
+    return sys.executable or "python"
 
 
 def main():
@@ -40,8 +81,11 @@ def main():
     
     args = parser.parse_args()
     
+    # Pick interpreter (prefer venv if found)
+    python_exe = _find_venv_python()
+
     # Build pytest command
-    cmd = ["python", "-m", "pytest"]
+    cmd = [python_exe, "-m", "pytest"]
     
     # Add cleanup option
     cmd.extend(["--cleanup-option", args.cleanup_option])
@@ -65,6 +109,7 @@ def main():
     # Add test directory
     cmd.append("tests/")
     
+    print(f"Using interpreter: {python_exe}")
     print(f"Running tests with cleanup option: {args.cleanup_option}")
     print(f"Command: {' '.join(cmd)}")
     print("-" * 50)

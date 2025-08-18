@@ -8,6 +8,7 @@ from typing import Dict, Optional
 
 from ..pages.pages import Pages
 from ..page.page import Page
+from ..table.table import Tables
 
 class Report:
     """Represents a Power BI report with all its components loaded into memory"""
@@ -17,12 +18,13 @@ class Report:
         self.report_path = Path("reports") / name
         self.baseline_path = Path("baseline_report")
         
-        # Initialize report if it doesn't exist
+    # Initialize report if it doesn't exist
         if not self.report_path.exists():
             self._create_from_baseline()
         
-        # Load pages and report structure
+    # Load pages and dataset structure
         self._pages: Optional[Pages] = None
+        self._tables: Optional[Tables] = None
         self._load_report_structure()
     
     def _create_from_baseline(self):
@@ -114,11 +116,23 @@ class Report:
             self._pages = Pages(pages_file)
         else:
             self._pages = None
+
+        # Load dataset tables and relationships from <name>.Dataset/definition
+        dataset_definition = self.report_path / f"{self.name}.Dataset" / "definition"
+        if dataset_definition.exists():
+            self._tables = Tables(dataset_definition)
+        else:
+            self._tables = None
     
     @property
     def pages(self) -> Optional[Pages]:
         """Get the pages object for this report"""
         return self._pages
+
+    @property
+    def tables(self) -> Optional[Tables]:
+        """Get the tables container for this report (tables + relationships)"""
+        return self._tables
     
     def get_page(self, page_name: str) -> Optional[Page]:
         """Get a specific page by name"""

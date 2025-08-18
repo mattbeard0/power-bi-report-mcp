@@ -9,9 +9,8 @@ from pathlib import Path
 import sys
 
 # Add the server directory to the path
-sys.path.append(str(Path(__file__).parent.parent / "server"))
-
-from main import app
+sys.path.append(str(Path(__file__).parent.parent))
+from server.main import app
 from fastapi.testclient import TestClient
 
 # Create a test client
@@ -219,6 +218,35 @@ class TestPowerBIServer:
         response = client.delete("/delete_report", params={"report_name": "nonexistent_report"})
         assert response.status_code == 404
         assert "not found" in response.json()["detail"]
+
+    def test_tables_endpoints(self):
+        """Test listing tables, columns, and relationships"""
+        report_name = "test_report_tables"
+        client.post("/make_new_report", json={"name": report_name})
+
+        # list tables
+        resp_tables = client.get("/get_tables", params={"report_name": report_name})
+        assert resp_tables.status_code == 200
+        assert resp_tables.json()["success"] is True
+        assert "tables" in resp_tables.json()["data"]
+
+        # if a known sample table exists (like DummyData), try fetching columns
+        tables = resp_tables.json()["data"]["tables"]
+        if tables:
+            first_table = tables[0]
+            resp_cols = client.get(
+                "/get_table_columns",
+                params={"report_name": report_name, "table_name": first_table},
+            )
+            assert resp_cols.status_code == 200
+            assert resp_cols.json()["success"] is True
+            assert "columns" in resp_cols.json()["data"]
+
+        # relationships
+        resp_rels = client.get("/get_relationships", params={"report_name": report_name})
+        assert resp_rels.status_code == 200
+        assert resp_rels.json()["success"] is True
+        assert "relationships" in resp_rels.json()["data"]
 
 if __name__ == "__main__":
     pytest.main([__file__])

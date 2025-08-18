@@ -19,6 +19,7 @@ from server.routers.report.router import router as report_router
 from server.routers.page.router import router as page_router
 from server.routers.visual.router import router as visual_router
 from server.storage.reports import active_reports
+from server.routers.table.router import router as table_router
 
 app = FastAPI(
     title="Power BI MCP Server",
@@ -35,6 +36,7 @@ async def health_check():
 app.include_router(report_router)
 app.include_router(page_router)
 app.include_router(visual_router)
+app.include_router(table_router)
 
 if __name__ == "__main__":
     mcp = FastApiMCP(app, exclude_operations=[])
